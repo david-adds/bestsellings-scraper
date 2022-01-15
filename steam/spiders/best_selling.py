@@ -1,10 +1,11 @@
 import scrapy
+from ..items import SteamItem
 
 
 class BestSellingSpider(scrapy.Spider):
     name = 'best_selling'
-    allowed_domains = ['store.steampowered.com/search/?filter=topsellers']
-    start_urls = ['http://store.steampowered.com/search/?filter=topsellers/']
+    allowed_domains = ['store.steampowered.com']
+    start_urls = ['https://store.steampowered.com/search/?filter=topsellers/']
 
     def parse(self, response):
-        pass
+        steam_item = SteamItem()
