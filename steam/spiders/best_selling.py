@@ -16,5 +16,6 @@ class BestSellingSpider(scrapy.Spider):
             steam_item['game_name'] = game.xpath(".//span[@class='title']/text()").get()
             steam_item['release_date'] = game.xpath(".//div[@class='col search_released responsive_secondrow']/text()").get()
             steam_item['platforms'] = get_platforms(game.xpath(".//span[contains(@class,'platform_img') or @class='vr_supported']/@class").getall())
+            steam_item['reviews_summary'] = game.xpath(".//span[contains(@class,'search_review_summary')]/@data-tooltip-html").get()
             yield steam_item
             
