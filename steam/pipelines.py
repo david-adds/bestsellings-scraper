@@ -1,13 +1,15 @@
-# Define your item pipelines here
-#
-# Don't forget to add your pipeline to the ITEM_PIPELINES setting
-# See: https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 
-
-# useful for handling different item types with a single interface
-from itemadapter import ItemAdapter
-
-
-class SteamPipeline:
-    def process_item(self, item, spider):
-        return item
+def get_platforms(list_classes):
+    platforms = []
+    for item in list_classes:
+        platform = item.split(' ')[-1]
+        if platform=='win':
+            platforms.append('Windows')
+        elif platform=='mac':
+            platforms.append('Mac OS')
+        elif platform=='linux':
+            platforms.append('Linux')
+        # if platform=='vr_supported':
+        else:
+            platforms.append('VR Supported')
+    return platforms
