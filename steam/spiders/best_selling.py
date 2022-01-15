@@ -1,4 +1,5 @@
 import scrapy
+from w3lib.html import remove_tags
 from ..items import SteamItem
 from ..pipelines import get_platforms
 
