@@ -12,7 +12,7 @@ class SteamItem(scrapy.Item):
     game_name = scrapy.Field()
     release_date = scrapy.Field()
     platforms = scrapy.Field()
-    rating = scrapy.Field()
+    reviews_summary = scrapy.Field()
     original_price = scrapy.Field()
     discounted_price = scrapy.Field()
     discount_rate = scrapy.Field()
