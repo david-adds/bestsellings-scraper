@@ -1,5 +1,4 @@
-
-from dis import dis
+from w3lib.html import remove_tags
 
 
 def get_platforms(list_classes):
@@ -17,10 +16,22 @@ def get_platforms(list_classes):
             platforms.append('VR Supported')
     return platforms
 
+
+def remove_html(review_summary):
+    cleaned_review_summary = ''
+    try:
+        cleaned_review_summary = remove_tags(review_summary)
+    except TypeError:
+        cleaned_review_summary = 'No reviews'
+
+    return cleaned_review_summary
+
+
 def clean_discount_rate(discount_rate):
     if discount_rate:
         return discount_rate.lstrip('-')
     return discount_rate
+
 
 def get_original_price(selector_obj):
     original_price = ''
@@ -30,6 +41,7 @@ def get_original_price(selector_obj):
     else:
         original_price = selector_obj.xpath("normalize-space(.//div[contains(@class,'search_price')]/text())").get()      
     return original_price 
+
 
 def clean_discounted_price(discounted_price):
     if discounted_price:
