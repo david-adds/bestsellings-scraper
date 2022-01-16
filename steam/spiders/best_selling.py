@@ -1,7 +1,7 @@
 import scrapy
 from w3lib.html import remove_tags
 from ..items import SteamItem
-from ..pipelines import get_platforms, clean_discount_rate, get_original_price
+from ..pipelines import get_platforms, clean_discount_rate, get_original_price, clean_discounted_price
 
 class BestSellingSpider(scrapy.Spider):
     name = 'best_selling'
@@ -20,6 +20,7 @@ class BestSellingSpider(scrapy.Spider):
             steam_item['reviews_summary'] = remove_tags(game.xpath(".//span[contains(@class,'search_review_summary')]/@data-tooltip-html").get())
             steam_item['discount_rate'] = clean_discount_rate(game.xpath(".//div[contains(@class,'search_discount')]/span/text()").get())
             steam_item['original_price'] = get_original_price(game.xpath(".//div[contains(@class,'search_price_discount_combined')]"))
+            steam_item['discounted_price'] = clean_discounted_price(game.xpath("(.//div[contains(@class,'search_price discounted')]/text())[2]").get())
             yield steam_item
             
             
