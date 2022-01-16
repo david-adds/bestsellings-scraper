@@ -18,3 +18,12 @@ def clean_discount_rate(discount_rate):
     if discount_rate:
         return discount_rate.lstrip('-')
     return discount_rate
+
+def get_original_price(selector_obj):
+    original_price = ''
+    div_with_discount = selector_obj.xpath(".//div[contains(@class,'search_price discounted')]")
+    if len(div_with_discount) > 0:
+        original_price = div_with_discount.xpath(".//span/strike/text()").get()
+    else:
+        original_price = selector_obj.xpath("normalize-space(.//div[contains(@class,'search_price')]/text())").get()      
+    return original_price 
