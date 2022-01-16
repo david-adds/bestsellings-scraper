@@ -13,3 +13,8 @@ def get_platforms(list_classes):
         else:
             platforms.append('VR Supported')
     return platforms
+
+def clean_discount_rate(discount_rate):
+    if discount_rate:
+        return discount_rate.lstrip('-')
+    return discount_rate
