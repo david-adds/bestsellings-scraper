@@ -1,4 +1,7 @@
 
+from dis import dis
+
+
 def get_platforms(list_classes):
     platforms = []
     for item in list_classes:
@@ -27,3 +30,8 @@ def get_original_price(selector_obj):
     else:
         original_price = selector_obj.xpath("normalize-space(.//div[contains(@class,'search_price')]/text())").get()      
     return original_price 
+
+def clean_discounted_price(discounted_price):
+    if discounted_price:
+        return discounted_price.strip()
+    return discounted_price
