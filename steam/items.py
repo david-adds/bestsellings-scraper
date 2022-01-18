@@ -4,7 +4,7 @@
 # https://docs.scrapy.org/en/latest/topics/items.html
 
 import scrapy
-
+from scrapy.loader.processors import TakeFirst
 
 class SteamItem(scrapy.Item):
     game_url = scrapy.Field()
