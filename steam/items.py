@@ -5,6 +5,7 @@
 
 import scrapy
 from w3lib.html import remove_tags
+from scrapy.selector import Selector
 from itemloaders.processors import TakeFirst, MapCompose
 
 def remove_html(review_summary):
@@ -32,6 +33,17 @@ def get_platforms(one_class):
     return platforms
 
 
+def get_original_price(html_markup):
+    original_price = ''
+    selector_obj = Selector(text=html_markup)
+    div_with_discount = selector_obj.xpath(".//div[contains(@class,'search_price discounted')]")
+    if len(div_with_discount) > 0:
+        original_price = div_with_discount.xpath(".//span/strike/text()").get()
+    else:
+        original_price = selector_obj.xpath("normalize-space(.//div[contains(@class,'search_price')]/text())").get()      
+    return original_price
+
+
 class SteamItem(scrapy.Item):
     game_url = scrapy.Field(
         output_processor = TakeFirst()
@@ -52,6 +64,9 @@ class SteamItem(scrapy.Item):
         input_processor = MapCompose(remove_html),
         output_processor = TakeFirst()
     )
-    original_price = scrapy.Field()
+    original_price = scrapy.Field(
+        input_processor = MapCompose(get_original_price),
+        output_processor = TakeFirst()
+    )
     discounted_price = scrapy.Field()
     discount_rate = scrapy.Field()
