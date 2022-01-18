@@ -10,19 +10,20 @@ class BestSellingSpider(scrapy.Spider):
     start_urls = ['https://store.steampowered.com/search/?filter=topsellers/']
     
     def parse(self, response):
-        steam_item = SteamItem()
         games = response.xpath("//div[@id='search_resultsRows']/a")
         for game in games:
-            steam_item['game_url'] = game.xpath(".//@href").get()
-            steam_item['image_url'] = game.xpath(".//div[@class='col search_capsule']/img/@src").get()
-            steam_item['game_name'] = game.xpath(".//span[@class='title']/text()").get()
-            steam_item['release_date'] = game.xpath(".//div[@class='col search_released responsive_secondrow']/text()").get()
-            steam_item['platforms'] = get_platforms(game.xpath(".//span[contains(@class,'platform_img') or @class='vr_supported']/@class").getall())
-            steam_item['reviews_summary'] = remove_html(game.xpath(".//span[contains(@class,'search_review_summary')]/@data-tooltip-html").get())
-            steam_item['discount_rate'] = clean_discount_rate(game.xpath(".//div[contains(@class,'search_discount')]/span/text()").get())
-            steam_item['original_price'] = get_original_price(game.xpath(".//div[contains(@class,'search_price_discount_combined')]"))
-            steam_item['discounted_price'] = clean_discounted_price(game.xpath("(.//div[contains(@class,'search_price discounted')]/text())[2]").get())
-            yield steam_item
+            loader = ItemLoader(item=SteamItem(),selector=game, response=response)
+            loader.add_xpath("game_url", ".//@href")
+            loader.add_xpath("image_url", ".//div[@class='col search_capsule']/img/@src")
+            loader.add_xpath("game_name", ".//span[@class='title']/text()")
+            loader.add_xpath("release_date", ".//div[@class='col search_released responsive_secondrow']/text()")
+            loader.add_xpath("platforms", ".//span[contains(@class,'platform_img') or @class='vr_supported']/@class")
+            loader.add_xpath("reviews_summary", ".//span[contains(@class,'search_review_summary')]/@data-tooltip-html")
+            loader.add_xpath("discount_rate", ".//div[contains(@class,'search_discount')]/span/text()")
+            loader.add_xpath("original_price", ".//div[contains(@class,'search_price_discount_combined')]")
+            loader.add_xpath("discounted_price", "(.//div[contains(@class,'search_price discounted')]/text())[2]")
+            
+            yield loader.load_item()
             
         next_page = response.xpath(".//a[@class='pagebtn' and text()='>']/@href").get()
         if next_page:
