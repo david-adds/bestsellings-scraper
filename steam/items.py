@@ -4,13 +4,24 @@
 # https://docs.scrapy.org/en/latest/topics/items.html
 
 import scrapy
-from scrapy.loader.processors import TakeFirst
+from itemloaders.processors import TakeFirst
 
 class SteamItem(scrapy.Item):
-    game_url = scrapy.Field()
-    image_url = scrapy.Field()
-    game_name = scrapy.Field()
-    release_date = scrapy.Field()
+    game_url = scrapy.Field(
+        output_processor = TakeFirst()
+    )
+    image_url = scrapy.Field(
+        output_processor = TakeFirst()
+
+    )
+    game_name = scrapy.Field(
+        output_processor = TakeFirst()
+
+    )
+    release_date = scrapy.Field(
+        output_processor = TakeFirst()
+
+    )
     platforms = scrapy.Field()
     reviews_summary = scrapy.Field()
     original_price = scrapy.Field()
