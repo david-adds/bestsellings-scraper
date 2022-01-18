@@ -44,6 +44,18 @@ def get_original_price(html_markup):
     return original_price
 
 
+def clean_discount_rate(discount_rate):
+    if discount_rate:
+        return discount_rate.lstrip('-')
+    return discount_rate
+ 
+
+def clean_discounted_price(discounted_price):
+    if discounted_price:
+        return discounted_price.strip()
+    return discounted_price
+
+
 class SteamItem(scrapy.Item):
     game_url = scrapy.Field(
         output_processor = TakeFirst()
@@ -68,5 +80,11 @@ class SteamItem(scrapy.Item):
         input_processor = MapCompose(get_original_price, str.strip),
         output_processor = Join('')
     )
-    discounted_price = scrapy.Field()
-    discount_rate = scrapy.Field()
+    discounted_price = scrapy.Field(
+        input_processor = MapCompose(clean_discounted_price),
+        output_processor = TakeFirst()
+    )
+    discount_rate = scrapy.Field(
+        input_processor = MapCompose(clean_discount_rate),
+        output_processor = TakeFirst()
+    )
