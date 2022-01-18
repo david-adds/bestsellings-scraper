@@ -17,6 +17,21 @@ def remove_html(review_summary):
     return cleaned_review_summary
 
 
+def get_platforms(one_class):
+    platforms = []
+    platform = one_class.split(' ')[-1]
+    if platform=='win':
+        platforms.append('Windows')
+    elif platform=='mac':
+        platforms.append('Mac OS')
+    elif platform=='linux':
+        platforms.append('Linux')
+    else:
+        platforms.append('VR Supported')
+        
+    return platforms
+
+
 class SteamItem(scrapy.Item):
     game_url = scrapy.Field(
         output_processor = TakeFirst()
@@ -30,7 +45,9 @@ class SteamItem(scrapy.Item):
     release_date = scrapy.Field(
         output_processor = TakeFirst()
     )
-    platforms = scrapy.Field()
+    platforms = scrapy.Field(
+        input_processor = MapCompose(get_platforms)
+    )
     reviews_summary = scrapy.Field(
         input_processor = MapCompose(remove_html),
         output_processor = TakeFirst()
