@@ -1,8 +1,6 @@
 import scrapy
 from scrapy.loader import ItemLoader
 from ..items import SteamItem
-from ..pipelines import get_platforms, clean_discount_rate
-from ..pipelines import get_original_price, clean_discounted_price, remove_html
 
 class BestSellingSpider(scrapy.Spider):
     name = 'best_selling'
@@ -31,6 +29,3 @@ class BestSellingSpider(scrapy.Spider):
                 url=next_page,
                 callback=self.parse
             )
-            
-            
-            
