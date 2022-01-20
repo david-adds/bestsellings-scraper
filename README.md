@@ -10,7 +10,7 @@
 </p>
 
 
-<p>This is a web scraper, using the Python framework Scrapy, built to collect the top seller games' data from Steam website.</p>
+<p>This is a web scraper, using the Python framework Scrapy, built to collect best-selling games' data from Steam website.</p>
 
 <img src="/images/steam-webpage.png" alt="ml imagem">
 
